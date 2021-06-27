@@ -7,8 +7,8 @@ const generateNewCard=(taskData)=>`
     <div class="col-lg-4 col-md-6" >
             <div class="card">
                 <div class="card-header d-flex justify-content-end gap-2">
-                    <button type="button" class="btn btn-outline-success">
-                        <i class="fas fa-pencil-alt"></i>
+                    <button type="button" class="btn btn-outline-success" id=${taskData.id} onclick="editCard.apply(this,arguments)">
+                        <i class="fas fa-pencil-alt" id=${taskData.id} onclick="editCard.apply(this,arguments)"></i>
                     </button>
                     <button type="button" class="btn btn-outline-danger" id=${taskData.id} onclick="deleteCard.apply(this,arguments)">
                         <i class="fas fa-dumpster id=${taskData.id} onclick="taskContainer.apply(this,arguments)""></i>
@@ -79,18 +79,45 @@ const deleteCard=(event)=>{
     const tagname=event.target.tagName;
 
     globalStore=globalStore.filter((cardObject)=>cardObject.id!==targetId);
-    localStorage.setItem("tasky",JSON.stringify({cards:globalStore}));
+    localStorage.setItem("tasky",JSON.stringify({cards:globalStore}));e
 
     if(tagname==="BUTTON"){
-        console.log(tagname)
-        return taskContainer.removeChild(event.target.parentNode.parentNode.parentNode)         }
+        return taskContainer.removeChild(event.target.parentNode.parentNode.parentNode)         
+    }
     else{
-        console.log(tagname)
-        return taskContainer.removeChild(event.target.parentNode.parentNode.parentNode.parentNode)             }
+        return taskContainer.removeChild(event.target.parentNode.parentNode.parentNode.parentNode) 
+    }
     
 
-}
+};
 
+//content-editable
+const editCard=(event)=>{
+    event=window.event;
+    const targetId=event.target.id;
+    const tagname=event.target.tagName;
+
+    let prentElement;
+    if(tagname=="BUTTON"){
+        parentElement=event.target.parentNode.parentNode;
+        console.log(parentElement)
+    }
+    else{
+        parentElement=event.target.parentNode.parentNode.parentNode;
+        console.log(parentElement)
+    }
+    let taskTitle=parentElement.childNodes[5].childNodes[1];
+    let taskDescription=parentElement.childNodes[5].childNodes[3];
+    let taskType=parentElement.childNodes[5].childNodes[5];
+    let submitButton=parentElement.childNodes[7].childNodes[1];
+    
+//setAttribute
+    taskTitle.setAttribute("contenteditable","true");
+    taskDescription.setAttribute("contenteditable","true");
+    taskType.setAttribute("contenteditable","true");
+    submitButton.innerHTML="Save changes";
+
+};
 
 
 
