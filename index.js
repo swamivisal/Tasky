@@ -25,6 +25,9 @@ const generateNewCard=(taskData)=>`
                         type="button" 
                         class="btn btn-outline-primary float-end" 
                         id=${taskData.id}
+                        data-bs-toggle="modal" 
+                        data-bs-target="#showModal"
+                        onclick="openCard.apply(this,arguments)"
                     >Open Task</button>
                 </div>
             </div>
@@ -113,6 +116,7 @@ const editCard=(event)=>{
     let submitButton=parentElement.childNodes[7].childNodes[1];
     
 //setAttribute
+    submitButton.removeAttribute("onclick");
     taskTitle.setAttribute("contenteditable","true");
     taskDescription.setAttribute("contenteditable","true");
     taskType.setAttribute("contenteditable","true");
@@ -136,6 +140,7 @@ const saveEditChanges=(event)=>{
         console.log(parentElement)
     }
 
+    
     let taskTitle=parentElement.childNodes[5].childNodes[1];
     let taskDescription=parentElement.childNodes[5].childNodes[3];
     let taskType=parentElement.childNodes[5].childNodes[5];
@@ -165,8 +170,31 @@ const saveEditChanges=(event)=>{
     taskDescription.setAttribute("contenteditable","false");
     taskType.setAttribute("contenteditable","false");
     submitButton.innerHTML="Open task";
-    submitButton.removeAttribute("onclick")
+    
 };
+
+const openCard=()=>{
+    event=window.event;
+
+    
+    let parentElement=event.target.parentNode.parentNode;
+    
+
+    let taskImage=parentElement.childNodes[3].getAttribute("src");
+    let taskTitle=parentElement.childNodes[5].childNodes[1].innerHTML;
+    let taskDescription=parentElement.childNodes[5].childNodes[3].innerHTML;
+    let taskType=parentElement.childNodes[5].childNodes[5].innerHTML;
+    
+    
+    document.getElementsByClassName("showImage")[0].src=taskImage
+    document.getElementsByClassName("showTitle")[0].innerHTML=taskTitle
+    document.getElementsByClassName("showDescription")[0].innerHTML=taskDescription
+    document.getElementsByClassName("showType")[0].innerHTML=taskType
+
+    
+    
+}
+
 
 
 
